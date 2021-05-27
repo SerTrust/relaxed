@@ -43,8 +43,10 @@
                         <table id="datalist" class="table table-bordered table-hover display">
                             <thead>
                             <tr>
+                                <th>No</th>
                                 <th>名稱</th>
                                 <th>說明</th>
+                                <th>上傳日期</th>
                                 <th>附件</th>
                             </tr>
                             </thead>
@@ -72,6 +74,7 @@
     <script>
         var formModal = $('#modal-form');
         var titalModal = $('#modal-title');
+        var number = 1;
         $('#btn_show_create').css({'margin-left':'30px','width':'100px','height':'30px'});
 
         var dataTable = $('#datalist').DataTable({
@@ -91,10 +94,19 @@
             },
             "columns": [
                 {
+                    "data" : "id",
+                    "render" : function(data, type, full, meta){
+                        return meta.row + 1 + meta.settings._iDisplayStart;
+                    }
+                },
+                {
                     data: "name"
                 },
                 {
                     data: "description"
+                },
+                {
+                    data: "date"
                 },
                 {
                     //這裡的data變數值為sysid，相等於row.sysid
@@ -104,7 +116,8 @@
                     render: function (data, type, row, meta) {
                         //row指的是資料列物件 data變數相等於row.sysid
                         // data = "\'"+data+"\'"
-                        return `<button id='btn-show-detail' type='button' data-toggle='modal' data-target='#model-form'  onclick='showAttachments(&#39;${data}&#39;)' >下載附件</button>`;
+                        return `<button id='btn-show-detail' type='button' data-toggle='modal' data-target='#model-form'  onclick='showAttachments(&#39;${data}&#39;)' >下載附件</button>
+                        <button id='btn-show-detail' type='button' data-toggle='modal' data-target='#model-form'  onclick='deleteAttachments(&#39;${data}&#39;)' >刪除</button>`;
 
                     }
                 }
@@ -122,6 +135,24 @@
                     appendCreateFormHtml(data);
                     formModal.modal('show');
                 });
+        }
+
+        function deleteAttachments(id){
+            $.ajax({
+                type: "DELETE",
+                url: '/api/messages/'+id+'/images',
+                success: function (data, textStatus, xhr) {
+                    let ct = xhr.getResponseHeader("content-type")
+                    //console.log(ct)
+                    showSuccessToast('刪除成功');
+                    formModal.modal('hide');
+                    dataTable.ajax.reload();
+                },
+                error: function (XMLHttpRequest, textStatus) {
+                    console.log(XMLHttpRequest);  //XMLHttpRequest.responseText    XMLHttpRequest.status   XMLHttpRequest.readyState
+                    console.log(textStatus);
+                }
+            });
         }
 
         function showAttachments(id) {

@@ -15,6 +15,7 @@ import org.springframework.data.jpa.datatables.mapping.DataTablesInput;
 import org.springframework.data.jpa.datatables.mapping.DataTablesOutput;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
@@ -34,7 +35,9 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.text.MessageFormat;
+import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
@@ -69,6 +72,7 @@ public class MessageApiController {
         message.setName(messageDTO.getName());
         message.setDescription(messageDTO.getDescription());
         message.setAttachments(new ArrayList<>());
+        message.setDate(LocalDate.now());
 
         //检验是否有文件？
         if (null != files && files.size() > 0) {
@@ -87,14 +91,14 @@ public class MessageApiController {
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-                //获取应用/image虚拟路径在文件系统上对应的真实路径 + 文件名  并创建File对象
-                File imageFile = new File("D:/", multipartFile.getOriginalFilename());
-                try {
-                    //将上传的文件保存到目标目录下
-                    multipartFile.transferTo(imageFile);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+//                获取应用/image虚拟路径在文件系统上对应的真实路径 + 文件名  并创建File对象
+//                File imageFile = new File("D:/", multipartFile.getOriginalFilename());
+//                try {
+//                    将上传的文件保存到目标目录下
+//                    multipartFile.transferTo(imageFile);
+//                } catch (IOException e) {
+//                    e.printStackTrace();
+//                }
             }
         }
 
@@ -121,5 +125,18 @@ public class MessageApiController {
                 .headers(header)
                 .contentType(MediaType.parseMediaType("application/octet-stream"))
                 .body(resource);
+    }
+
+    @DeleteMapping("{messageId}/images")
+    public ResponseEntity deleteFile(@PathVariable("messageId") UUID id){
+        if ("".equals(id)) {
+            return new ResponseEntity(HttpStatus.BAD_REQUEST);
+        }
+        messageRepository.deleteById(id);
+//        return new ResponseEntity(HttpStatus.NO_CONTENT);
+        ObjectMapper mapper = new ObjectMapper();
+        ObjectNode result = mapper.createObjectNode();
+        result.put("message","success");
+        return ResponseEntity.ok().contentType(MediaType.parseMediaType("application/json")).body(result);
     }
 }
