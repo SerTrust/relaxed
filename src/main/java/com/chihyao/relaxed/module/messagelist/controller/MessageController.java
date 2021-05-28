@@ -25,8 +25,6 @@ public class MessageController {
 
     @Autowired
     private MessageRepository messageRepository;
-    @Autowired
-    private ImageRepository imageRepository;
 
     @GetMapping
     public String showMessage() {
