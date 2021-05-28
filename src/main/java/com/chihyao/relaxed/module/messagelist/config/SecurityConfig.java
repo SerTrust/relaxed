@@ -39,7 +39,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .csrf().disable()
                 .formLogin()
                 .loginPage("/login")
-                .successForwardUrl("/");
+//                .successForwardUrl("/"); // forward
+                .defaultSuccessUrl("/"); // redirect
     }
 
     @Override
