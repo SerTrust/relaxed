@@ -19,9 +19,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     private static final String[] AUTH_RESOURCE_WHITELIST = {
             "/h2-console/**",
-            "/static/**"
-//            "/login",
-//            "/perform_login"
+            "/webjars/**"
     };
 
     @Override
@@ -41,7 +39,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .csrf().disable()
                 .formLogin()
                 .loginPage("/login")
-                .loginProcessingUrl("/perform_login");
+                .successForwardUrl("/");
     }
 
     @Override
