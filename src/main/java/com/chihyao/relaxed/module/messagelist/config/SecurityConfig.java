@@ -18,7 +18,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private UserDetailsService userDetailsService;
 
     private static final String[] AUTH_RESOURCE_WHITELIST = {
-            "/h2-console/**"
+            "/h2-console/**",
+            "/login",
+            "/perform_login"
     };
 
     @Override
@@ -32,11 +34,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http
                 .authorizeRequests()
-//                .antMatchers("/login","/perform_login").permitAll()
+                .antMatchers("/login","/perform_login").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .csrf().disable()
-                .formLogin();
+                .formLogin()
+                .loginPage("/login")
+                .loginProcessingUrl("/perform_login");
     }
 
     @Override
