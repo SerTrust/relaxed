@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<fontFamilies>
+  <fontFamily name="標楷體">
+    <bold>./kaiu.ttf</bold>
+    <boldItalic>./kaiu.ttf</boldItalic>
+    <exportFonts>
+      <export key="net.sf.jasperreports.html">'標楷體', Arial, Helvetica, sans-serif
+      </export>
+      <export key="net.sf.jasperreports.xhtml">'標楷體', Arial, Helvetica, sans-serif
+      </export>
+    </exportFonts>
+    <italic>./kaiu.ttf</italic>
+    <normal>./kaiu.ttf</normal>
+    <pdfEmbedded>true</pdfEmbedded>
+    <pdfEncoding>Identity-H</pdfEncoding>
+  </fontFamily>
+</fontFamilies>

@@ -8,6 +8,7 @@ import net.sf.jasperreports.engine.*;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 import net.sf.jasperreports.engine.design.JasperDesign;
 import net.sf.jasperreports.engine.xml.JRXmlLoader;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ResourceUtils;
@@ -41,14 +42,16 @@ public class ReportServiceImpl implements ReportService {
         return JasperExportManager.exportReportToPdf(print);
     }
 
-    //todo 改用ModelMapper
     private List<UserDto> convertToDto(List<User> users) {
-        return users.stream().map(user -> {
-            UserDto userDto = new UserDto();
-            userDto.setAccount(user.getAccount());
-            userDto.setName(user.getName());
-            userDto.setEmailAddress(user.getEmailAddress());
-            return userDto;
-        }).collect(Collectors.toList());
+        ModelMapper modelMapper = new ModelMapper();
+        return users.stream().map(user -> modelMapper.map(user, UserDto.class)).collect(Collectors.toList());
+
+//        return users.stream().map(user -> {
+//            UserDto userDto = new UserDto();
+//            userDto.setAccount(user.getAccount());
+//            userDto.setName(user.getName());
+//            userDto.setEmailAddress(user.getEmailAddress());
+//            return userDto;
+//        }).collect(Collectors.toList());
     }
 }
