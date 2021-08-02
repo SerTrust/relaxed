@@ -36,7 +36,6 @@ public class ReportServiceImpl implements ReportService {
 //      方法二
         File file = ResourceUtils.getFile("classpath:report1.jrxml");
         JasperReport report = JasperCompileManager.compileReport(file.getAbsolutePath());
-        //todo 處理中文顯示問題
         JasperPrint print = JasperFillManager.fillReport(report, null, dataSource);
 
         return JasperExportManager.exportReportToPdf(print);

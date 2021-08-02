@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <fontFamilies>
-  <fontFamily name="標楷體">
+  <fontFamily name="標楷體, DFKai-sb">
     <bold>./kaiu.ttf</bold>
     <boldItalic>./kaiu.ttf</boldItalic>
     <exportFonts>
